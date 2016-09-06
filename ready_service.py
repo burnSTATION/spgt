@@ -3,15 +3,11 @@ from messages import SayText2
 from players.entity import Player
 from commands.say import SayCommand
 from engines.server import engine_server
-from cvars import ConVar
-from cvars.flags import ConVarFlags
-from cvars.public import PublicConVar
 
 ### GLOBALS & CONSTANTS ###
 CHAT_PREFIX = "[\x02eSN\x01]"
 players = {}
 is_warmup_period = True
-pug_min_ready = ConVar('pug_min_ready', 10, 'The Minimum Amount of players to be ready before starting the match')
 
 
 class CreatePlayer():
@@ -21,11 +17,12 @@ class CreatePlayer():
         self.permission_level = 0
         self.steam_id = ""
 
-if is_warmup_period:
-    engine_server.server_command('mp_warmup_pausetimer 1;')
+def endless_warmup():
+	if is_warmup_period == True:
+		engine_server.server_command('mp_warmup_pausetimer 1;')
 
 def try_start_match(index):
-    if len(players) >= pug_min_ready and all_players_ready(players):
+    if len(players) >= 1 and all_players_ready(players):
         SayText2(CHAT_PREFIX + "The match will now begin").send(index)
         start_match()
     else:
@@ -47,7 +44,8 @@ def start_match():
 
 @OnLevelInit
 def on_level_init(map_name):
-    is_warmup_period = True
+	is_warmup_period = True
+	endless_warmup()
 
 @OnClientFullyConnect
 def on_client_fully_connect(index):
