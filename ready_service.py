@@ -33,8 +33,16 @@ def on_client_disconnect(index):
  
 @SayCommand('.players')
 def list_players(command, index, team):
-    SayText2(chat_prefix + str(players)+ ", ").send(index)
- 
+	ready_status = players[index].is_ready
+	all_players = []
+	for key, value in players.items():
+		if ready_status == True:
+			player_ready = "READY"
+		elif ready_status == False:
+			player_ready = "NOT READY"
+		all_players.append(players[index].username + " : " + player_ready + ", ") 
+	SayText2(chat_prefix + str(all_players)).send(index)
+
 @SayCommand('.ready')
 def make_player_ready(command, index, team):
     key = Player(index).index
