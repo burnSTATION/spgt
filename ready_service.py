@@ -6,7 +6,6 @@ from engines.server import engine_server
 
 ### GLOBALS & CONSTANTS ###
 CHAT_PREFIX = "[\x02eSN\x01]"
-MAPS = ["de_dust2", "de_cache", "de_mirage", "de_overpass", "de_cbble", "de_train", "de_nuke"]
 players = {}
 is_warmup_period = True
 
@@ -18,11 +17,12 @@ class CreatePlayer():
         self.permission_level = 0
         self.steam_id = ""
 
-if is_warmup_period:
-    engine_server.server_command('mp_warmup_pausetimer 1;')
+def endless_warmup():
+	if is_warmup_period == True:
+		engine_server.server_command('mp_warmup_pausetimer 1;')
 
 def try_start_match(index):
-    if len(players) >= 10 and all_players_ready(players):
+    if len(players) >= 1 and all_players_ready(players):
         SayText2(CHAT_PREFIX + "The match will now begin").send(index)
         start_match()
     else:
@@ -44,7 +44,8 @@ def start_match():
 
 @OnLevelInit
 def on_level_init(map_name):
-    is_warmup_period = True
+	is_warmup_period = True
+	endless_warmup()
 
 @OnClientFullyConnect
 def on_client_fully_connect(index):
