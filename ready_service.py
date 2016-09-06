@@ -22,15 +22,13 @@ def endless_warmup():
 		engine_server.server_command('mp_warmup_pausetimer 1;')
 
 def try_start_match(index):
-    if len(players) >= 1 and all_players_ready(players):
-        SayText2(CHAT_PREFIX + "The match will now begin").send(index)
+    if len(players) >= 10 and all_players_ready(players):
+        SayText2(CHAT_PREFIX + "The match will now begin").send()
         start_match()
     else:
         SayText2(CHAT_PREFIX + "Still waiting for 10 players to be ready to start the match").send(index)
 
 def all_players_ready(players):
-    """ Iterates through dict of players and returns True if all of their
-    is_ready values is True. Otherwise, return False. """
     for key, value in players.items():
         if not value.is_ready:
             return False
@@ -49,8 +47,9 @@ def on_level_init(map_name):
 
 @OnClientFullyConnect
 def on_client_fully_connect(index):
-    player = Player(index)
-    players[player.index] = CreatePlayer(player.name)
+	player = Player(index)
+	players[player.index] = CreatePlayer(player.name)
+	engine_server.server_command('mp_warmup_pausetimer 1;')
 
 @OnClientDisconnect
 def on_client_disconnect(index):
