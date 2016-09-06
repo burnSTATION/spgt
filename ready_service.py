@@ -22,11 +22,19 @@ if is_warmup_period:
     engine_server.server_command('mp_warmup_pausetimer 1;')
 
 def try_start_match(index):
-    if len(players.values) >= 10:
+    if len(players.values) >= 10 and all_players_ready(players):
         SayText2(chat_prefix + "The match will now begin").send(index)
         start_match()
     else:
-       SayText2(chat_prefix + "Still waiting for 10 players to be ready to start the match").send(index)
+        SayText2(chat_prefix + "Still waiting for 10 players to be ready to start the match").send(index)
+
+def all_players_ready(players):
+    """ Iterates through dict of players and returns True if all of their
+    is_ready values is True. Otherwise, return False. """
+    for key, value in players.items():
+        if not value.is_ready:
+            return False
+    return True
 
 def start_match():
     is_warmup_period = False
