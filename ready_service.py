@@ -4,6 +4,7 @@ from players.entity import Player
 from commands.say import SayCommand
 from engines.server import engine_server
 
+### GLOBALS ###
 players = {}
 chat_prefix = "[\x02eSN\x01]"
 maps = ["de_dust2", "de_cache", "de_mirage", "de_overpass", "de_cbble", "de_train", "de_nuke"]
@@ -49,9 +50,9 @@ def on_client_disconnect(index):
 
 @SayCommand('.players')
 def list_players(command, index, team):
-    ready_status = players[index].is_ready
     all_players = []
     for key, value in players.items():
+        ready_status = value.is_ready
         if ready_status is True:
             player_ready = "READY"
         elif ready_status is False:
