@@ -7,7 +7,7 @@ from engines.server import engine_server
 ### GLOBALS & CONSTANTS ###
 CHAT_PREFIX = "[\x02eSN\x01]"
 players = {}
-is_warmup_period = True
+is_ready_period = True
 
 
 class CreatePlayer():
@@ -18,11 +18,11 @@ class CreatePlayer():
         self.steam_id = ""
 
 def endless_warmup():
-	if is_warmup_period == True:
+	if is_ready_period == True:
 		engine_server.server_command('mp_warmup_pausetimer 1;')
 
 def try_start_match(index):
-    if len(players) >= 10 and all_players_ready(players):
+    if len(players) >= 1 and all_players_ready(players):
         SayText2(CHAT_PREFIX + "The match will now begin").send()
         start_match()
     else:
@@ -35,14 +35,14 @@ def all_players_ready(players):
     return True
 
 def start_match():
-    is_warmup_period = False
+    is_ready_period = False
     engine_server.server_command('mp_warmup_end;')
     SayText2(CHAT_PREFIX + "!LIVE ON NEXT RESTART!").send()
     engine_server.server_command('mp_restartgame 10;')
 
 @OnLevelInit
 def on_level_init(map_name):
-	is_warmup_period = True
+	is_ready_period = True
 	endless_warmup()
 
 @OnClientFullyConnect
