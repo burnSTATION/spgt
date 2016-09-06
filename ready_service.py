@@ -21,7 +21,7 @@ def try_start_match(index):
     else:
         SayText2(chat_prefix + "Still waiting for 10 players to be ready to start the match").send(index)
  
-@EOnClientFullyConnect
+@OnClientFullyConnect
 def on_client_fully_connect(index):
     player = Player(index)
     players[player.index] = CreatePlayer(player.name)
@@ -33,7 +33,7 @@ def on_client_disconnect(index):
  
 @SayCommand('.players')
 def list_players(command, index, team):
-    SayText2(chat_prefix + str(players[keys].username)+ ", ").send(index)
+    SayText2(chat_prefix + str(players)+ ", ").send(index)
  
 @SayCommand('.ready')
 def make_player_ready(command, index, team):
