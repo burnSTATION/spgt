@@ -6,26 +6,22 @@ import time
 
 CHAT_PREFIX = "[\x02eSN\x01]"
 
-ct_pause_remainging = True
+ct_pause_remaining = True
 t_pause_remaining = True
 round = 0
 pause_max_length = 90
+_round_status = False
+
+@Event('round_announce_last_round_half')
+def round_announce_last_round_half(game_event):
+    global _round_status
+    _round_status = True
 
 @Event('round_end')
-def round_counter():
-	round += 1
-
-def wait_nextround():
-	current_round = round
-	if round >= current_round:
-		pausetimer_start()
-
-def pausetimer_start(time):
-	start_time = time.time()
-	end_time = start_time + pause_max_length
-	if time.time() == end_time:
-		engine_server.server_command('mp_unpause_match;')
-		SayText2(chat_prefix, "Max pause time reached! Unpausing...").send()
+def round_end(game_event):
+	if not _round_status:
+		ct_pause_remaining = True
+		t_pause_remaining = True
 
 @SayCommand('.pause')
 def pause_match(command, team, index):
