@@ -22,7 +22,7 @@ if is_warmup_period:
     engine_server.server_command('mp_warmup_pausetimer 1;')
 
 def try_start_match(index):
-    if len(players.values) >= 10 and all_players_ready(players):
+    if len(players) >= 10 and all_players_ready(players):
         SayText2(CHAT_PREFIX + "The match will now begin").send(index)
         start_match()
     else:
