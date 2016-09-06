@@ -1,11 +1,13 @@
-from listeners import OnClientFullyConnect, OnClientDisconnect
+from listeners import OnClientFullyConnect, OnClientDisconnect, OnLevelInit
 from messages import SayText2
 from players.entity import Player
 from commands.say import SayCommand
+from engines.server import engine_server
  
 players = {}
 chat_prefix = "[\x02eSN\x01]"
 maps = ["de_dust2", "de_cache", "de_mirage", "de_overpass", "de_cbble", "de_train", "de_nuke"]
+is_warmup_period = True
  
 
 class CreatePlayer():
@@ -15,12 +17,26 @@ class CreatePlayer():
         self.permission_level = 0;
         self.steam_id = "";
 
+if is_warmup_period:
+	engine_server.server_command('mp_warmup_pausetimer 1;')
+
 def try_start_match(index):
-    if len(players) >= 10:
-        SayText2(chat_prefix + "The match will now begin").send(index)
-    else:
-        SayText2(chat_prefix + "Still waiting for 10 players to be ready to start the match").send(index)
- 
+	if len(players.values) >= 10:
+		SayText2(chat_prefix + "The match will now begin").send(index)
+		start_match()
+	else:
+		SayText2(chat_prefix + "Still waiting for 10 players to be ready to start the match").send(index)
+
+def start_match():
+	is_warmup_period = False
+	engine_server.server_command('mp_warmup_end;')
+	SayText2(chat_prefix + "!LIVE ON NEXT RESTART!").send()
+	engine_server.server_command('mp_restartgame 10;')
+
+@OnLevelInit
+def on_level_init(map_name):
+    is_warmup_period = True
+
 @OnClientFullyConnect
 def on_client_fully_connect(index):
     player = Player(index)
@@ -40,7 +56,7 @@ def list_players(command, index, team):
 			player_ready = "READY"
 		elif ready_status == False:
 			player_ready = "NOT READY"
-		all_players.append(players[index].username + " : " + player_ready + ", ") 
+		all_players.append(value.username + " : " + player_ready + ", ") 
 	SayText2(chat_prefix + str(all_players)).send(index)
 
 @SayCommand('.ready')
