@@ -18,7 +18,7 @@ class CreatePlayer():
         self.steam_id = ""
 
 def endless_warmup():
-	if is_ready_period == True:
+	if is_ready_period:
 		engine_server.server_command('mp_warmup_pausetimer 1;')
 
 def try_start_match(index):
@@ -53,8 +53,7 @@ def on_client_fully_connect(index):
 
 @OnClientDisconnect
 def on_client_disconnect(index):
-    player = Player(index)
-    players.pop(player.index)
+    players.pop(index)
 
 @SayCommand('.players')
 def list_players(command, index, team):

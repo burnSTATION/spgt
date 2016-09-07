@@ -2,7 +2,6 @@ from commands.say import SayCommand
 from engines.server import engine_server
 from messages import SayText2
 from events import Event
-import time
 
 CHAT_PREFIX = "[\x02eSN\x01]"
 
