@@ -18,15 +18,15 @@ def round_announce_last_round_half(game_event):
 
 @Event('round_end')
 def round_end(game_event):
-	if not _round_status:
-		ct_pause_remaining = True
-		t_pause_remaining = True
+    if not _round_status:
+        ct_pause_remaining = True
+        t_pause_remaining = True
 
 @SayCommand('.pause')
 def pause_match(command, team, index):
-	engine_server.server_command('mp_pause_match;')
-	wait_nextround()
+    engine_server.server_command('mp_pause_match;')
+    wait_nextround()
 
 @SayCommand('.unpause')
 def unpause_match(command, team, index):
-	engine_server.server_command('mp_unpause_match;')
+    engine_server.server_command('mp_unpause_match;')

@@ -18,8 +18,8 @@ class CreatePlayer():
         self.steam_id = ""
 
 def endless_warmup():
-	if is_ready_period:
-		engine_server.server_command('mp_warmup_pausetimer 1;')
+    if is_ready_period:
+        engine_server.server_command('mp_warmup_pausetimer 1;')
 
 def try_start_match(index):
     if len(players) >= 1 and all_players_ready(players):
@@ -42,14 +42,14 @@ def start_match():
 
 @OnLevelInit
 def on_level_init(map_name):
-	is_ready_period = True
-	endless_warmup()
+    is_ready_period = True
+    endless_warmup()
 
 @OnClientFullyConnect
 def on_client_fully_connect(index):
-	player = Player(index)
-	players[player.index] = CreatePlayer(player.name)
-	engine_server.server_command('mp_warmup_pausetimer 1;')
+    player = Player(index)
+    players[player.index] = CreatePlayer(player.name)
+    engine_server.server_command('mp_warmup_pausetimer 1;')
 
 @OnClientDisconnect
 def on_client_disconnect(index):
