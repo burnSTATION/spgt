@@ -3,12 +3,8 @@ from engines.server import engine_server
 from messages import SayText2
 from events import Event
 
-CHAT_PREFIX = "[\x02eSN\x01]"
+import spgt.config
 
-ct_pause_remaining = True
-t_pause_remaining = True
-round = 0
-pause_max_length = 90
 _round_status = False
 
 @Event('round_announce_last_round_half')
