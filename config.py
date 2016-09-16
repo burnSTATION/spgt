@@ -1,5 +1,6 @@
 # General Plugin Variables
 CHAT_PREFIX = "[\x02eSN\x01]" # This is included at the beginning of every chat message the plugin prints
+current_map = ""
 
 # Pause Service Variables
 ct_pause_remaining = True # Starts the map with a counter terrorist pause granted

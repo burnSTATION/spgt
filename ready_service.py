@@ -4,7 +4,7 @@ from players.entity import Player
 from commands.say import SayCommand
 from engines.server import engine_server
 
-import spgt.config
+import spgt.config as config
 
 ### GLOBALS & CONSTANTS ###
 players = {}

@@ -1,8 +1,9 @@
 from engines.server import engine_server
 from messages import SayText2
 from commands.say import SayCommand
+from listeners import OnLevelInit
 
-import spgt.config
+import spgt.config as config
 
 def get_map_name(map_name):
     maps = {
@@ -12,7 +13,7 @@ def get_map_name(map_name):
         ("cache", "de_cache")           : "de_cache",
         ("train", "de_train")           : "de_train",
         ("mirage", "de_mirage")         : "de_mirage",
-        ("cbbl", "cobble", "de_cbbl")   : "de_cbbl",
+        ("cbble", "cobble", "de_cbble") : "de_cbble",
         ("overpass", "de_overpass")     : "de_overpass"
     }
 
@@ -21,14 +22,21 @@ def get_map_name(map_name):
             return value
     return None
 
+@OnLevelInit
+def on_level_init(map_name):
+    config.current_map = map_name
+
 @SayCommand('.map')
 def map_command(command, index, team_only):
     try:
         user_input = command[1].lower()
         map = get_map_name(user_input)
         if map:
-            SayText2(config.CHAT_PREFIX + " Changing map to " + map + "...").send()
-            engine_server.server_command('changelevel ' + map + ';')
+            if map != config.current_map:
+                SayText2(config.CHAT_PREFIX + " Changing map to " + map + "...").send()
+                engine_server.server_command('changelevel ' + map + ';')
+            else:
+                SayText2(config.CHAT_PREFIX + " Current map is already " + map + ".").send()
         else:
             SayText2(config.CHAT_PREFIX + " Invalid map name. Map pool: " +
                      "dust2, inferno, cache, train, mirage, " +
