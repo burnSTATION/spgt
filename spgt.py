@@ -1,4 +1,9 @@
 import spgt.ready_service
 import spgt.pause_service
-from events import Event
-from messages import SayText2
+import spgt.core_service
+
+def load():
+    pass
+
+def unload():
+    pass
