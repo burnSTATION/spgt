@@ -2,6 +2,7 @@ from engines.server import engine_server
 from messages import SayText2
 from commands.say import SayCommand
 from listeners import OnLevelInit
+from listeners.tick import Delay
 
 import spgt.config as config
 
@@ -22,6 +23,9 @@ def get_map_name(map_name):
             return value
     return None
 
+def changemap(map_name):  # Callback function for Delay in .map
+    engine_server.server_command('changelevel ' + map_name + ';')
+
 @OnLevelInit
 def on_level_init(map_name):
     config.current_map = map_name
@@ -33,8 +37,8 @@ def map_command(command, index, team_only):
         map = get_map_name(user_input)
         if map:
             if map != config.current_map:
-                SayText2(config.CHAT_PREFIX + " Changing map to " + map + "...").send()
-                engine_server.server_command('changelevel ' + map + ';')
+                SayText2(config.CHAT_PREFIX + " Changing map to " + map + " in 5 seconds...").send()
+                Delay(5, changemap, map)
             else:
                 SayText2(config.CHAT_PREFIX + " Current map is already " + map + ".").send()
         else:
