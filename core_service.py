@@ -41,13 +41,13 @@ def map_command(command, index, team_only):
     """
     try:
         user_input = command[1].lower()
-        map = get_map_name(user_input)
-        if map:
-            if map != config.current_map:
-                SayText2(config.CHAT_PREFIX + " Changing map to " + map + " in 5 seconds...").send()
-                Delay(5, changemap, map)
+        map_name = get_map_name(user_input)
+        if map_name:
+            if map_name != config.current_map:
+                SayText2(config.CHAT_PREFIX + " Changing map to " + map_name + " in 5 seconds...").send()
+                Delay(5, changemap, map_name)
             else:
-                SayText2(config.CHAT_PREFIX + " Current map is already " + map + ".").send()
+                SayText2(config.CHAT_PREFIX + " Current map is already " + map_name + ".").send()
         else:
             SayText2(config.CHAT_PREFIX + " Invalid map name. Allowed maps: " +
                      "dust2, inferno, cache, train, mirage, " +
